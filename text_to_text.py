@@ -19,9 +19,5 @@ def translate(text, user_lang):
     "Punjabi": "pa"
     }
     lang = language_codes[user_lang]
-    if lang != 'en':
-        return GoogleTranslator(source='auto', target=lang).translate(text)
-    else:
-        return text
-
-
+    
+    return GoogleTranslator(source='auto', target=lang).translate(text)
