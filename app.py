@@ -60,14 +60,14 @@ def callback_record():
 
     # Record prompt
     prompt_text = recognize_speech(st.session_state.user_lang)
+    tran_prompt_text = translate(prompt_text, "English")
     st.session_state.prompt_text = prompt_text
-
     st.session_state.is_recording = False
 
-    response = get_answer(prompt_text)
+    response = get_answer(tran_prompt_text)
     json.dump(response, open('response.json', 'wt'))
-
-    st.session_state.chat_text = response
+    tran_response = translate(response, st.session_state.user_lang)
+    st.session_state.chat_text = tran_response
 
 ##################
 with st.container():
@@ -82,7 +82,7 @@ with st.container():
         st.sidebar.subheader("Select User Language")
         st.session_state.user_lang = st.sidebar.selectbox("Choose Language", list(language_codes.keys()))
 
-        st.write('Press, Record to start recording your prompt')
+        st.write('Press "Record" Button to start recording your prompt')
 
         rec_button = st.button(
             label="Record :microphone:", type='primary',
