@@ -23,11 +23,12 @@ def recognize_speech(user_lang):
     lang = language_codes[user_lang]
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        audio = r.listen(source)
+        audio = r.listen(source, timeout=6)
     
     if user_lang == 'en':
         text = r.recognize_google(audio)
+        return text
     else:
         text = r.recognize_google(audio, language=lang)
-
-    return text
+        return text
+    
