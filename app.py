@@ -3,7 +3,6 @@ import requests
 import streamlit as st
 from streamlit_lottie import st_lottie
 
-
 # Import your custom modules
 from text_to_text import translate
 from Medi_talk import get_answer
@@ -69,7 +68,11 @@ def callback_record():
     tran_response = translate(response, st.session_state.user_lang)
     st.session_state.chat_text = tran_response
 
-##################
+# Define language change callback
+def callback_language_change():
+    st.session_state.prompt_text = None
+    st.session_state.chat_text = None
+
 with st.container():
     left, right = st.columns([2, 3])
     with left:
@@ -80,7 +83,10 @@ with st.container():
 
         # Language selection button
         st.sidebar.subheader("Select User Language")
-        st.session_state.user_lang = st.sidebar.selectbox("Choose Language", list(language_codes.keys()))
+        st.session_state.user_lang = st.sidebar.selectbox(
+            "Choose Language", list(language_codes.keys()),
+            on_change=callback_language_change
+        )
 
         st.write('Press "Record" Button to start recording your prompt')
 
@@ -93,7 +99,6 @@ with st.container():
         if st.session_state.prompt_text:
             prompt_box.write(f'Prompt: {st.session_state.prompt_text}')
 
-##########################
 with st.container():
     st.write('---')
 
@@ -106,4 +111,3 @@ with st.container():
             play_text(line, st.session_state.user_lang)
         
         message_box.write(lines)
-            
